@@ -1,0 +1,27 @@
+{
+  "version": "1.0",
+  "exportedAt": "2026-01-20",
+  "presets": [
+    {
+      "song": "Comfortably Numb",
+      "section": "Solo",
+      "guitar": "lp",
+      "chain": [
+        { "id": "NR", "name": "Noise Gate", "on": true, "params": { "thres": -35 } },
+        { "id": "DST", "name": "Sustainer", "on": true, "params": { "drive": 72, "tone": 50 } },
+        { "id": "AMP", "name": "UK Lead", "mode": "NAM", "params": { "profile": "gilmour_lead", "gain": 4.5, "tone": 1.2 } },
+        { "id": "EQ", "name": "Graphic EQ", "on": true, "params": { "80Hz": 0, "160Hz": 0, "400Hz": -2, "1k6": 3.5, "6k4": -1.5 } },
+        { "id": "DLY", "name": "Analog Delay", "on": true, "params": { "time": 450, "feedback": 38, "mix": 22 } }
+      ]
+    },
+    {
+      "song": "Foxy Lady",
+      "section": "Verse",
+      "guitar": "tele",
+      "chain": [
+        { "id": "DST", "name": "Fuzz Face Style", "on": true, "params": { "drive": 85, "tone": 40 } },
+        { "id": "AMP", "name": "Plexi Crunch", "mode": "STD", "params": { "gain": 45, "bass": 60, "mid": 55, "tre": 35 } }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>GP-5 Companion SIM</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <header class="app-header">
+            <div id="header-info">
+                <h1>GP-5 COMPANION</h1>
+                <div id="status-bar">MOD: 0/11 | 120 BPM</div>
+            </div>
+            <select id="guitar-select">
+                </select>
+        </header>
+
+        <main id="main-content">
+            </main>
+
+        <nav class="bottom-nav">
+            <button onclick="changeView('songlist')" id="nav-list">SONGLIST</button>
+            <button onclick="changeView('performance')" id="nav-perf">PERFORM</button>
+            <button onclick="openTuner()" id="nav-tuner" class="tuner-trigger">TUNER</button>
+        </nav>
+    </div>
+
+    <div id="module-sheet">
+        <div class="sheet-header">
+            <h3 id="sheet-title">MODULO</h3>
+            <button class="close-btn" onclick="closeSheet()">×</button>
+        </div>
+        <div id="params-container"></div>
+        <div class="sheet-actions">
+            <button class="btn-cancel" onclick="closeSheet()">ANNULLA</button>
+            <button class="btn-apply" onclick="applyModuleChanges()">APPLICA</button>
+        </div>
+    </div>
+
+    <div id="ui-lock-overlay" onclick="handleLockTap()">
+        <div class="lock-content">
+            <div class="lock-icon">🔒</div>
+            <p>UI BLOCCATA<br><small>Tieni premuto 1.5s per sbloccare</small></p>
+            <div id="lock-progress"></div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
