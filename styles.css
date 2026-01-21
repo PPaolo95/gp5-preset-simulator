@@ -104,6 +104,25 @@ body {
 .needle-container { position: relative; width: 300px; height: 150px; border-bottom: 2px solid #333; }
 #needle { position: absolute; bottom: 0; left: 50%; width: 4px; height: 130px; background: var(--danger); transform-origin: bottom center; }
 
-.param-row { margin-bottom: 15px; }
-.param-row label { display: block; font-size: 0.7rem; color: #888; margin-bottom: 5px; }
-.param-row select, .param-row input[type=range] { width: 100%; }
+.param-row {
+    margin-bottom: 20px;
+    padding: 5px 0;
+}
+
+.param-value {
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 1rem;
+    color: var(--accent);
+}
+
+#params-container {
+    padding: 10px 5px;
+}
+
+/* EQ Faders con valori sopra */
+.eq-val {
+    font-size: 0.75rem;
+    color: var(--accent);
+    margin-bottom: 5px;
+    font-weight: bold;
+}
