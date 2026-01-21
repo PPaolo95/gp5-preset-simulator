@@ -1,6 +1,6 @@
 {
-  "version": "1.0",
-  "exportedAt": "2026-01-20",
+  "version": "1.2",
+  "comment": "Nomi ufficiali Valeton GP-5",
   "presets": [
     {
       "song": "Comfortably Numb",
@@ -8,19 +8,17 @@
       "guitar": "lp",
       "chain": [
         { "id": "NR", "name": "Noise Gate", "on": true, "params": { "thres": -35 } },
-        { "id": "DST", "name": "Sustainer", "on": true, "params": { "drive": 72, "tone": 50 } },
-        { "id": "AMP", "name": "UK Lead", "mode": "NAM", "params": { "profile": "gilmour_lead", "gain": 4.5, "tone": 1.2 } },
-        { "id": "EQ", "name": "Graphic EQ", "on": true, "params": { "80Hz": 0, "160Hz": 0, "400Hz": -2, "1k6": 3.5, "6k4": -1.5 } },
-        { "id": "DLY", "name": "Analog Delay", "on": true, "params": { "time": 450, "feedback": 38, "mix": 22 } }
+        { "id": "AMP", "name": "SnapTone / NAM", "mode": "NAM", "params": { "profile": "gilmour_lead", "gainTrim": 1.5 } },
+        { "id": "CAB", "name": "4x12 Green", "on": true, "params": { "hicut": 6.5 } }
       ]
     },
     {
-      "song": "Foxy Lady",
-      "section": "Verse",
-      "guitar": "tele",
+      "song": "White Room",
+      "section": "Chorus",
+      "guitar": "lp",
       "chain": [
-        { "id": "DST", "name": "Fuzz Face Style", "on": true, "params": { "drive": 85, "tone": 40 } },
-        { "id": "AMP", "name": "Plexi Crunch", "mode": "STD", "params": { "gain": 45, "bass": 60, "mid": 55, "tre": 35 } }
+        { "id": "AMP", "name": "UK 800", "mode": "STD", "params": { "gain": 65, "bass": 50, "mid": 65, "tre": 45 } },
+        { "id": "CAB", "name": "4x12 Vintage", "on": true, "params": { "hicut": 7.5 } }
       ]
     }
   ]
