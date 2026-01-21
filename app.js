@@ -40,6 +40,24 @@ let state = {
     tunerActive: false
 };
 
+// --- FUNZIONI HELPER PER UI ---
+
+function renderSlider(key, val, min = 0, max = 100, step = 1, unit = "") {
+    return `
+        <div class="param-row">
+            <div style="display:flex; justify-content:space-between; font-size:0.8rem; margin-bottom:5px;">
+                <label>${key.toUpperCase()}</label>
+                <span class="param-value" style="color:var(--accent); font-weight:bold;">${val}${unit}</span>
+            </div>
+            <input type="range" min="${min}" max="${max}" step="${step}" value="${val}" 
+                style="width:100%; accent-color:var(--accent);"
+                oninput="this.previousElementSibling.querySelector('.param-value').innerText = this.value + '${unit}'">
+        </div>
+    `;
+}
+
+// --- LOGICA CORE ---
+
 function init() {
     renderGuitars();
     loadState();
@@ -90,9 +108,7 @@ function openSection(songId, section) {
 }
 
 function getPresetFor(songId, section, guitarId) {
-    const gui = guitars[guitarId];
     let chain = [];
-
     if (section === 'Solo' || songId === 'cnumb') {
         chain = [
             { id: 'NR', name: 'Noise Gate', on: true, params: { thres: -35 } },
@@ -118,6 +134,7 @@ function getPresetFor(songId, section, guitarId) {
 function renderEditor() {
     const container = document.getElementById('main-content');
     const song = songDatabase.find(s => s.id === state.activeSong);
+    if (!song) return;
     container.innerHTML = `
         <div style="padding:15px; border-bottom:1px solid #222;">
             <h2 style="margin:0; font-size:1.1rem;">${song.title}</h2>
@@ -141,20 +158,21 @@ function editModule(idx) {
     const container = document.getElementById('params-container');
     document.getElementById('sheet-title').innerText = mod.id;
 
+    let html = "";
     if (mod.id === 'AMP') {
-        container.innerHTML = renderAmpModule(mod);
+        html = renderAmpModule(mod);
     } else if (mod.id === 'EQ') {
-        container.innerHTML = `<div class="eq-container">` + Object.entries(mod.params).map(([b, v]) => `
+        html = `<div class="eq-container">` + Object.entries(mod.params).map(([b, v]) => `
             <div class="eq-fader-wrap">
                 <span class="eq-val">${v}</span>
                 <input type="range" class="eq-fader" min="-12" max="12" step="0.5" value="${v}" oninput="this.previousElementSibling.innerText=this.value">
                 <span class="eq-label">${b}</span>
             </div>`).join('') + `</div>`;
     } else {
-        container.innerHTML = Object.entries(mod.params).map(([k, v]) => `
-            <div class="param-row"><label>${k.toUpperCase()}</label>
-            <input type="range" value="${v}" oninput="this.previousElementSibling.innerText='${k.toUpperCase()}: '+this.value"></div>`).join('');
+        html = Object.entries(mod.params).map(([k, v]) => renderSlider(k, v)).join('');
     }
+    
+    container.innerHTML = html;
     sheet.classList.add('open');
 }
 
@@ -164,12 +182,26 @@ function renderAmpModule(mod) {
         <button class="${!isNAM?'active':''}" onclick="switchAmpMode('STD')">MODELS</button>
         <button class="${isNAM?'active nam-mode':''}" onclick="switchAmpMode('NAM')">SNAPTONE/NAM</button>
     </div>`;
+    
     if (isNAM) {
+        const p = mod.params;
         html += `<div class="param-row"><label>PROFILO NAM</label>
-        <select id="nam-sel">${namProfiles.map(p => `<option value="${p.id}" ${mod.params.profile==p.id?'selected':''}>${p.name}</option>`).join('')}</select></div>`;
+        <select id="nam-sel" style="width:100%; background:#222; color:#fff; padding:10px; border:1px solid #444; border-radius:6px; margin-bottom:15px;">
+            ${namProfiles.map(p => `<option value="${p.id}" ${mod.params.profile==p.id?'selected':''}>${p.name}</option>`).join('')}
+        </select></div>`;
+        html += renderSlider('Gain Trim', p.gainTrim, -6, 6, 0.5, "dB");
+        html += renderSlider('Tone', p.tone, -5, 5, 0.5);
+        html += renderSlider('Level', p.level, 0, 100, 1, "dB");
     } else {
+        const p = mod.params;
         html += `<div class="param-row"><label>MODELLO GP-5</label>
-        <select id="amp-sel">${AMP_MODELS_GP5.map(m => `<option value="${m}" ${mod.name==m?'selected':''}>${m}</option>`).join('')}</select></div>`;
+        <select id="amp-sel" style="width:100%; background:#222; color:#fff; padding:10px; border:1px solid #444; border-radius:6px; margin-bottom:15px;">
+            ${AMP_MODELS_GP5.map(m => `<option value="${m}" ${mod.name==m?'selected':''}>${m}</option>`).join('')}
+        </select></div>`;
+        html += renderSlider('Gain', p.gain);
+        html += renderSlider('Bass', p.bass);
+        html += renderSlider('Mid', p.mid);
+        html += renderSlider('Treble', p.tre);
     }
     return html;
 }
@@ -188,7 +220,12 @@ function applyModuleChanges() {
     const namSel = document.getElementById('nam-sel');
     if (namSel) mod.params.profile = namSel.value;
     
-    // EQ Logic
+    const inputs = document.querySelectorAll('#params-container input[type=range]:not(.eq-fader)');
+    inputs.forEach(input => {
+        const key = input.previousElementSibling.querySelector('label').innerText.toLowerCase().replace(" ", "");
+        mod.params[key] = parseFloat(input.value);
+    });
+
     const faders = document.querySelectorAll('.eq-fader');
     if (faders.length > 0) {
         faders.forEach(f => mod.params[f.nextElementSibling.innerText] = parseFloat(f.value));
